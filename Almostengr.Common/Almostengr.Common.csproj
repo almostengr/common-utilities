@@ -13,7 +13,7 @@
     <AssemblyName>Almostengr.Common</AssemblyName>
     <RootNamespace>Almostengr.Common</RootNamespace>
     <Version>8.$([System.DateTime]::UtcNow.ToString(yyyy.MM.dd))</Version>
-    <PackageReadmeFile>./README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/almostengr/almostengr.common.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/almostengr/almostengr.common</PackageProjectUrl>
@@ -21,5 +21,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
