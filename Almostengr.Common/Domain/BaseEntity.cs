@@ -5,6 +5,8 @@ namespace Almostengr.Common.Domain;
 
 public abstract class BaseEntity
 {
+    private BaseEntity() { }
+
     [Key]
     public int Id { get; private set; }
 
