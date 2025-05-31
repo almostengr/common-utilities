@@ -1,4 +1,4 @@
-using Almostengr.Common.Extensions;
+using Almostengr.Common.Shared;
 
 namespace Almostengr.Common.Tests.Extensions;
 

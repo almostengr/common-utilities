@@ -12,7 +12,7 @@
     <Description>Common generic classes and methods used for building MVC and Web API applications.</Description>
     <AssemblyName>Almostengr.Common</AssemblyName>
     <RootNamespace>Almostengr.Common</RootNamespace>
-    <Version>8.$([System.DateTime]::UtcNow.ToString(yyyy.MM.dd))</Version>
+    <Version>8.$([System.DateTime]::UtcNow.ToString(yyyy.MM.ddHH))</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/almostengr/almostengr.common.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

@@ -44,10 +44,7 @@ public static class HttpClientExtensions
 
     public static string GetUrlWithProtocol(this string url)
     {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            throw new ArgumentNullException(nameof(url));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
         if (url.ToLower().StartsWith("http"))
         {
