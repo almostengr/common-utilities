@@ -1,6 +1,6 @@
-namespace Almostengr.Common.Extensions;
+namespace Almostengr.Common.Shared;
 
-public static class Calendar
+public static class CalendarExtensions
 {
     public static DateTime GetNthWeekdayOfMonth(int year, int month, DayOfWeek dayOfWeek, int occurrence)
     {

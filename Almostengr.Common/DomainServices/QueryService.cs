@@ -6,21 +6,19 @@ using Almostengr.Common.Shared;
 namespace Almostengr.Common.DomainServices;
 
 public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource>
-    where TEntity : BaseEntity, new()
-    where TResource : BaseResource, new()
+    where TEntity : BaseEntity where TResource : BaseResource, new()
 {
     protected readonly IQueryRepository<TEntity> _repository;
 
-    public QueryService(
-        IQueryRepository<TEntity> repository
-        )
+    public QueryService(IQueryRepository<TEntity> repository)
     {
         _repository = repository;
     }
 
-    public virtual async Task<bool> ExistsByGuidAsync(Guid guid)
+    public async Task<IEnumerable<TResource>> GetListAsync()
     {
-        return await _repository.ExistsByGuidAsync(guid);
+        IEnumerable<TEntity> entities = await _repository.GetListAsync();
+        return entities.Select(e => e.ToResource<TEntity, TResource>()).ToArray();
     }
 
     public async Task<bool> ExistsByIdAsync(int id)
@@ -28,19 +26,18 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return await _repository.ExistsByIdAsync(id);
     }
 
-    public virtual async Task<TResource> GetByIdAsync(int id)
+    public async Task<TResource> GetByIdAsync(int id)
     {
         TEntity entity = await _repository.GetByIdAsync(id);
         return entity.ToResource<TEntity, TResource>();
     }
 
-    public async Task<IEnumerable<TResource>> GetAllAsync()
+    public async Task<bool> ExistsByGuidAsync(Guid guid)
     {
-        IEnumerable<TEntity> entities = await _repository.GetAllAsync();
-        return entities.Select(e => e.ToResource<TEntity, TResource>()).ToArray();
+        return await _repository.ExistsByGuidAsync(guid);
     }
 
-    public virtual async Task<TResource> GetByGuidAsync(Guid guid)
+    public async Task<TResource> GetByGuidAsync(Guid guid)
     {
         TEntity entity = await _repository.GetByGuidAsync(guid);
         return entity.ToResource<TEntity, TResource>();

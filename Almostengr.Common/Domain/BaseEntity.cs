@@ -5,16 +5,18 @@ namespace Almostengr.Common.Domain;
 
 public abstract class BaseEntity
 {
+    protected BaseEntity() { }
+
     [Key]
     public int Id { get; private set; }
 
     [Required]
     public Guid Guid { get; private set; }
 
-    public DateTime ModifiedDate { get; private set; }
-
     [Required, MaxLength(100)]
     public string ModifiedBy { get; private set; }
+
+    public DateTime ModifiedDate { get; private set; }
 
     protected Result<BaseEntity> SetModified(string modifiedBy)
     {
