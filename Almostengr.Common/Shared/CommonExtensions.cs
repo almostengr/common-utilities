@@ -17,10 +17,14 @@ public static class CommonExtensions
         services.AddTransient(typeof(IQueryRepository<>), typeof(QueryRepository<>));
         services.AddTransient(typeof(IUpdateRepository<>), typeof(UpdateRepository<>));
         services.AddTransient(typeof(IDeleteRepository<>), typeof(DeleteRepository<>));
-        services.AddTransient(typeof(IQueryLookupRepository<>), typeof(QueryLookupRepository<>));
 
         services.AddTransient(typeof(ILogger<>), typeof(Logger<>));
         services.AddTransient(typeof(IQueryService<,>), typeof(QueryService<,>));
+    }
+
+    public static void AddCommonLookupServices(this IServiceCollection services)
+    {
+        services.AddTransient(typeof(IQueryLookupRepository<>), typeof(QueryLookupRepository<>));
         services.AddTransient(typeof(IQueryLookupService<,>), typeof(QueryLookupService<,>));
     }
 
