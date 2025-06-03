@@ -6,7 +6,7 @@ using Almostengr.Common.Shared;
 namespace Almostengr.Common.DomainServices;
 
 public class QueryLookupService<TEntity, TResource> : QueryService<TEntity, TResource>, IQueryLookupService<TEntity, TResource>
-    where TEntity : BaseLookupEntity where TResource : LookupResource, new()
+    where TEntity : BaseLookupEntity where TResource : LookupResource
 {
     private readonly IQueryLookupRepository<TEntity> _lookupRepository;
 

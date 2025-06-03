@@ -5,6 +5,13 @@ namespace Almostengr.Common.Domain;
 
 public abstract class BaseLookupEntity : BaseEntity
 {
+    private BaseLookupEntity(Guid guid, string shortDescription, string fullDescription)
+    {
+        ShortDescription = shortDescription;
+        FullDescription = fullDescription;
+        IsActive = true;
+    }
+
     protected BaseLookupEntity() : base() { }
 
     [Required, StringLength(100)]
@@ -15,7 +22,13 @@ public abstract class BaseLookupEntity : BaseEntity
 
     public bool IsActive { get; private set; }
 
-    public abstract Result<BaseLookupEntity> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
+    public Result<BaseLookupEntity> Create(
+        Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
+    // {
+    //     BaseLookupEntity entity = new(guid, shortDescription, fullDescription);
+    //     Result<BaseLookupEntity> result = entity.SetModified(modifiedBy);
+    //     return result;
+    // }
 
     public Result<BaseLookupEntity> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy)
     {

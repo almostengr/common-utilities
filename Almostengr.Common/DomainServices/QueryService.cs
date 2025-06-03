@@ -6,7 +6,7 @@ using Almostengr.Common.Shared;
 namespace Almostengr.Common.DomainServices;
 
 public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource>
-    where TEntity : BaseEntity where TResource : BaseResource, new()
+    where TEntity : BaseEntity where TResource : BaseResource
 {
     protected readonly IQueryRepository<TEntity> _repository;
 
