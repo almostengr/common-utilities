@@ -7,10 +7,16 @@ public abstract class BaseEntity
 {
     protected BaseEntity() { }
 
+    protected BaseEntity(Guid guid, string modifiedBy)
+    {
+        Guid = guid;
+        ModifiedDate = DateTime.UtcNow;
+        ModifiedBy = modifiedBy;
+    }
+
     [Key]
     public int Id { get; private set; }
 
-    [Required]
     public Guid Guid { get; private set; }
 
     [Required, MaxLength(100)]
@@ -25,7 +31,7 @@ public abstract class BaseEntity
             return Result<T>.Failure("Modified By was not provided.");
         }
 
-        ModifiedDate = DateTime.Now;
+        ModifiedDate = DateTime.UtcNow;
         ModifiedBy = modifiedBy;
         return Result<T>.Success((T)this);
     }

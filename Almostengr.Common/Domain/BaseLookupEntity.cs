@@ -22,7 +22,7 @@ public abstract class BaseLookupEntity : BaseEntity
 
     public bool IsActive { get; private set; }
 
-    public Result<BaseLookupEntity> Create(
+    public abstract Result<BaseLookupEntity> Create(
         Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
     // {
     //     BaseLookupEntity entity = new(guid, shortDescription, fullDescription);
