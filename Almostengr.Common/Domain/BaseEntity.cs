@@ -15,14 +15,14 @@ public abstract class BaseEntity
     }
 
     [Key]
-    public int Id { get; private set; }
+    public int Id { get; protected set; }
 
-    public Guid Guid { get; private set; }
+    public Guid Guid { get; protected set; }
 
     [Required, MaxLength(100)]
-    public string ModifiedBy { get; private set; }
+    public string ModifiedBy { get; protected set; }
 
-    public DateTime ModifiedDate { get; private set; }
+    public DateTime ModifiedDate { get; protected set; }
 
     protected Result<T> SetModified<T>(string modifiedBy) where T : BaseEntity
     {
