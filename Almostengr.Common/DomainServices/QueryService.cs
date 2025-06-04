@@ -9,16 +9,20 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
     where TEntity : BaseEntity where TResource : BaseResource
 {
     protected readonly IQueryRepository<TEntity> _repository;
+    protected readonly IMapper<TEntity, TResource> _mapper;
 
-    public QueryService(IQueryRepository<TEntity> repository)
+    public QueryService(
+        IMapper<TEntity, TResource> mapper,
+        IQueryRepository<TEntity> repository)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<TResource>> GetListAsync()
     {
         IEnumerable<TEntity> entities = await _repository.GetListAsync();
-        return entities.Select(e => e.ToResource<TEntity, TResource>()).ToArray();
+        return entities.Select(_mapper.ToResource).ToList();
     }
 
     public async Task<bool> ExistsByIdAsync(int id)
@@ -29,7 +33,7 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
     public async Task<TResource> GetByIdAsync(int id)
     {
         TEntity entity = await _repository.GetByIdAsync(id);
-        return entity.ToResource<TEntity, TResource>();
+        return _mapper.ToResource(entity);
     }
 
     public async Task<bool> ExistsByGuidAsync(Guid guid)
@@ -40,6 +44,6 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
     public async Task<TResource> GetByGuidAsync(Guid guid)
     {
         TEntity entity = await _repository.GetByGuidAsync(guid);
-        return entity.ToResource<TEntity, TResource>();
+        return _mapper.ToResource(entity);
     }
 }

@@ -27,39 +27,4 @@ public static class CommonExtensions
         services.AddTransient(typeof(IQueryLookupRepository<>), typeof(QueryLookupRepository<>));
         services.AddTransient(typeof(IQueryLookupService<,>), typeof(QueryLookupService<,>));
     }
-
-    public static TResource ToResource<TEntity, TResource>(this TEntity entity)
-        where TEntity : BaseEntity where TResource : BaseResource, new()
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new TResource
-        {
-            Guid = entity.Guid,
-            ModifiedBy = entity.ModifiedBy,
-            ModifiedDate = entity.ModifiedDate
-        };
-    }
-
-    public static LookupResource ToLookupResource<TEntity>(this TEntity entity)
-        where TEntity : BaseLookupEntity
-    {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new LookupResource
-        {
-            Guid = entity.Guid,
-            ModifiedBy = entity.ModifiedBy,
-            ModifiedDate = entity.ModifiedDate,
-            IsActive = entity.IsActive,
-            ShortDescription = entity.ShortDescription,
-            FullDescription = entity.FullDescription,
-        };
-    }
 }
