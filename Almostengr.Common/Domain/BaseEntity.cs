@@ -24,15 +24,11 @@ public abstract class BaseEntity
 
     public DateTime ModifiedDate { get; protected set; }
 
-    protected Result<T> SetModified<T>(string modifiedBy) where T : BaseEntity
+    protected void SetModified(string modifiedBy)
     {
-        if (string.IsNullOrWhiteSpace(modifiedBy))
-        {
-            return Result<T>.Failure("Modified By was not provided.");
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(modifiedBy, nameof(modifiedBy));
 
         ModifiedDate = DateTime.UtcNow;
         ModifiedBy = modifiedBy;
-        return Result<T>.Success((T)this);
     }
 }

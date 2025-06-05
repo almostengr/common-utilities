@@ -1,7 +1,6 @@
 using Almostengr.Common.Domain;
 using Almostengr.Common.DomainServices.Interfaces;
 using Almostengr.Common.DomainServices.Resources;
-using Almostengr.Common.Shared;
 
 namespace Almostengr.Common.DomainServices;
 

@@ -24,11 +24,6 @@ public abstract class BaseLookupEntity : BaseEntity
 
     public abstract Result<BaseLookupEntity> Create(
         Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
-    // {
-    //     BaseLookupEntity entity = new(guid, shortDescription, fullDescription);
-    //     Result<BaseLookupEntity> result = entity.SetModified(modifiedBy);
-    //     return result;
-    // }
 
     public Result<BaseLookupEntity> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy)
     {

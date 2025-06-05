@@ -1,6 +1,6 @@
 namespace Almostengr.Common.DomainServices.Resources;
 
-public class BaseResource
+public abstract class BaseResource
 {
     public BaseResource() { }
 
