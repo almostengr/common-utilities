@@ -7,24 +7,28 @@ public abstract class BaseEntity
 {
     protected BaseEntity() { }
 
-    [Key]
-    public int Id { get; private set; }
+    protected BaseEntity(Guid guid, string modifiedBy)
+    {
+        Guid = guid;
+        ModifiedDate = DateTime.UtcNow;
+        ModifiedBy = modifiedBy;
+    }
 
-    [Required]
-    public Guid Guid { get; private set; }
+    [Key]
+    public int Id { get; protected set; }
+
+    public Guid Guid { get; protected set; }
 
     [Required, MaxLength(100)]
-    public string ModifiedBy { get; private set; }
+    public string ModifiedBy { get; protected set; }
 
-    public DateTime ModifiedDate { get; private set; }
+    public DateTime ModifiedDate { get; protected set; }
 
-    protected Result<BaseEntity> SetModified(string modifiedBy)
+    protected void SetModified(string modifiedBy)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(modifiedBy, nameof(modifiedBy));
 
-        ModifiedDate = DateTime.Now;
+        ModifiedDate = DateTime.UtcNow;
         ModifiedBy = modifiedBy;
-
-        return Result<BaseEntity>.Success(this);
     }
 }
