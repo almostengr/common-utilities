@@ -1,26 +1,27 @@
 using Almostengr.Common.Domain;
 using Almostengr.Common.DomainServices.Interfaces;
 using Almostengr.Common.DomainServices.Resources;
-using Almostengr.Common.Shared;
 
 namespace Almostengr.Common.DomainServices;
 
 public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource>
-    where TEntity : BaseEntity, new()
-    where TResource : BaseResource, new()
+    where TEntity : BaseEntity where TResource : BaseResource
 {
     protected readonly IQueryRepository<TEntity> _repository;
+    protected readonly IMapper<TEntity, TResource> _mapper;
 
     public QueryService(
-        IQueryRepository<TEntity> repository
-        )
+        IMapper<TEntity, TResource> mapper,
+        IQueryRepository<TEntity> repository)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public virtual async Task<bool> ExistsByGuidAsync(Guid guid)
+    public async Task<IEnumerable<TResource>> GetListAsync()
     {
-        return await _repository.ExistsByGuidAsync(guid);
+        IEnumerable<TEntity> entities = await _repository.GetListAsync();
+        return entities.Select(_mapper.ToResource).ToList();
     }
 
     public async Task<bool> ExistsByIdAsync(int id)
@@ -28,21 +29,20 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return await _repository.ExistsByIdAsync(id);
     }
 
-    public virtual async Task<TResource> GetByIdAsync(int id)
+    public async Task<TResource> GetByIdAsync(int id)
     {
         TEntity entity = await _repository.GetByIdAsync(id);
-        return entity.ToResource<TEntity, TResource>();
+        return _mapper.ToResource(entity);
     }
 
-    public async Task<IEnumerable<TResource>> GetAllAsync()
+    public async Task<bool> ExistsByGuidAsync(Guid guid)
     {
-        IEnumerable<TEntity> entities = await _repository.GetAllAsync();
-        return entities.Select(e => e.ToResource<TEntity, TResource>()).ToArray();
+        return await _repository.ExistsByGuidAsync(guid);
     }
 
-    public virtual async Task<TResource> GetByGuidAsync(Guid guid)
+    public async Task<TResource> GetByGuidAsync(Guid guid)
     {
         TEntity entity = await _repository.GetByGuidAsync(guid);
-        return entity.ToResource<TEntity, TResource>();
+        return _mapper.ToResource(entity);
     }
 }

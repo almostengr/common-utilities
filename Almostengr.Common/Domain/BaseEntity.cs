@@ -5,26 +5,30 @@ namespace Almostengr.Common.Domain;
 
 public abstract class BaseEntity
 {
-    private BaseEntity() { }
+    protected BaseEntity() { }
+
+    protected BaseEntity(Guid guid, string modifiedBy)
+    {
+        Guid = guid;
+        ModifiedDate = DateTime.UtcNow;
+        ModifiedBy = modifiedBy;
+    }
 
     [Key]
-    public int Id { get; private set; }
+    public int Id { get; protected set; }
 
-    [Required]
-    public Guid Guid { get; private set; }
-
-    public DateTime ModifiedDate { get; private set; }
+    public Guid Guid { get; protected set; }
 
     [Required, MaxLength(100)]
-    public string ModifiedBy { get; private set; }
+    public string ModifiedBy { get; protected set; }
 
-    protected Result<BaseEntity> SetModified(string modifiedBy)
+    public DateTime ModifiedDate { get; protected set; }
+
+    protected void SetModified(string modifiedBy)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(modifiedBy, nameof(modifiedBy));
 
-        ModifiedDate = DateTime.Now;
+        ModifiedDate = DateTime.UtcNow;
         ModifiedBy = modifiedBy;
-
-        return Result<BaseEntity>.Success(this);
     }
 }

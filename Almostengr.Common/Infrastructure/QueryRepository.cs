@@ -7,16 +7,16 @@ namespace Almostengr.Common.Infrastructure;
 
 public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity : BaseEntity
 {
-    protected readonly IDbContext _dbContext;
+    protected readonly DbContext _dbContext;
     protected readonly DbSet<TEntity> _dbSet;
 
-    protected QueryRepository(IDbContext dbContext)
+    protected QueryRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync()
     {
         return await _dbSet.ToListAsync();
     }
@@ -26,22 +26,22 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
         return await _dbSet.Where(predicate).ToListAsync();
     }
 
-    public async Task<TEntity> GetByGuidAsync(Guid guid)
+    public virtual async Task<TEntity> GetByGuidAsync(Guid guid)
     {
         return await _dbSet.Where(i => i.Guid == guid).SingleOrDefaultAsync();
     }
 
-    public async Task<bool> ExistsByGuidAsync(Guid guid)
+    public virtual async Task<bool> ExistsByGuidAsync(Guid guid)
     {
         return await _dbSet.Where(i => i.Guid == guid).AnyAsync();
     }
 
-    public async Task<TEntity> GetByIdAsync(int id)
+    public virtual async Task<TEntity> GetByIdAsync(int id)
     {
         return await _dbSet.Where(i => i.Id == id).SingleOrDefaultAsync();
     }
 
-    public async Task<bool> ExistsByIdAsync(int id)
+    public virtual async Task<bool> ExistsByIdAsync(int id)
     {
         return await _dbSet.Where(i => i.Id == id).AnyAsync();
     }

@@ -1,9 +1,8 @@
-using Almostengr.Common.Domain;
 using Almostengr.Common.DomainServices;
 using Almostengr.Common.DomainServices.Interfaces;
-using Almostengr.Common.DomainServices.Resources;
 using Almostengr.Common.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Almostengr.Common.Shared;
 
@@ -17,18 +16,13 @@ public static class CommonExtensions
         services.AddTransient(typeof(IUpdateRepository<>), typeof(UpdateRepository<>));
         services.AddTransient(typeof(IDeleteRepository<>), typeof(DeleteRepository<>));
 
+        services.AddTransient(typeof(ILogger<>), typeof(Logger<>));
         services.AddTransient(typeof(IQueryService<,>), typeof(QueryService<,>));
     }
 
-    public static TResource ToResource<TEntity, TResource>(this TEntity entity)
-        where TResource : BaseResource, new()
-        where TEntity : BaseEntity
+    public static void AddCommonLookupServices(this IServiceCollection services)
     {
-        if (entity == null)
-        {
-            return null;
-        }
-
-        return new TResource();
+        services.AddTransient(typeof(IQueryLookupRepository<>), typeof(QueryLookupRepository<>));
+        services.AddTransient(typeof(IQueryLookupService<,>), typeof(QueryLookupService<,>));
     }
 }

@@ -1,19 +1,19 @@
-using System.Data;
 using Almostengr.Common.Domain;
 using Almostengr.Common.DomainServices.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Almostengr.Common.Infrastructure;
 
 public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<TEntity> where TEntity : BaseEntity
 {
-    protected AddRepository(IDbContext context) : base(context) { }
+    protected AddRepository(DbContext context) : base(context) { }
 
     public virtual async Task AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
     }
 
-    public async Task SaveChangesAsync()
+    public virtual async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();
     }

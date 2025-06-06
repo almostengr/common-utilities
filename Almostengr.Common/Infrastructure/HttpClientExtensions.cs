@@ -44,10 +44,7 @@ public static class HttpClientExtensions
 
     public static string GetUrlWithProtocol(this string url)
     {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            throw new ArgumentNullException(nameof(url));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
         if (url.ToLower().StartsWith("http"))
         {
@@ -79,7 +76,8 @@ public static class HttpClientExtensions
         return await response.DeserializeResponseBodyAsync<TResource>();
     }
 
-    public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request) where TResource : BaseResource where XResource : BaseResource
+    public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
+        where TResource : BaseResource where XResource : BaseResource
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));
@@ -91,7 +89,8 @@ public static class HttpClientExtensions
         return await response.DeserializeResponseBodyAsync<XResource>();
     }
 
-    public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request) where TResource : BaseResource where XResource : BaseResource
+    public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
+        where TResource : BaseResource where XResource : BaseResource
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -15,7 +15,7 @@
     <Authors>Kenny Robinson</Authors>
     <AssemblyName>Almostengr.Common.Tests</AssemblyName>
     <RootNamespace>Almostengr.Common</RootNamespace>
-    <Version>8.$([System.DateTime]::UtcNow.ToString(yyyy.MM.dd))</Version>
+    <Version>9.$([System.DateTime]::UtcNow.ToString(yyyy.MM.dd))</Version>
     <RepositoryUrl>https://github.com/almostengr/almostengr.common.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/almostengr/almostengr.common</PackageProjectUrl>
