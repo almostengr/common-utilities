@@ -3,35 +3,49 @@ using Almostengr.Common.DomainServices.Results;
 
 namespace Almostengr.Common.Domain;
 
-public abstract class BaseLookupEntity : BaseEntity
+public abstract class BaseLookupEntity<T> : BaseEntity where T : BaseLookupEntity<T>
 {
-    private BaseLookupEntity(Guid guid, string shortDescription, string fullDescription)
+    protected BaseLookupEntity(Guid guid, string shortDescription, string fullDescription) : base(guid)
     {
+        Guid = guid;
         ShortDescription = shortDescription;
         FullDescription = fullDescription;
         IsActive = true;
     }
 
+    protected BaseLookupEntity(Guid guid) : base(guid)
+    {
+        Guid = guid;
+    }
+
     protected BaseLookupEntity() : base() { }
 
-    [Required, StringLength(100)]
+    [Required, StringLength(LibConstants.ShortLength)]
     public string ShortDescription { get; protected set; }
 
-    [StringLength(500)]
+    [StringLength(LibConstants.LongLength)]
     public string FullDescription { get; protected set; }
 
     public bool IsActive { get; protected set; }
 
-    public abstract Result<BaseLookupEntity> Create(
+    public abstract Result<T> Create(
         Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
 
-    public Result<BaseLookupEntity> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy)
+    public Result<T> Update(string shortDescription, bool isActive, string modifiedBy)
+    {
+        ShortDescription = shortDescription;
+        IsActive = isActive;
+        SetModified(modifiedBy);
+        return Result<T>.Success((T)this);
+    }
+
+    public Result<T> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy)
     {
         ShortDescription = shortDescription;
         FullDescription = fullDescription;
         IsActive = isActive;
         SetModified(modifiedBy);
 
-        return Result<BaseLookupEntity>.Success(this);
+        return Result<T>.Success((T)this);
     }
 }

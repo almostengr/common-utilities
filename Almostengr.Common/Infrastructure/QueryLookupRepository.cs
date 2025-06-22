@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Almostengr.Common.Infrastructure;
 
 public class QueryLookupRepository<TEntity> : QueryRepository<TEntity>, IQueryLookupRepository<TEntity>
-    where TEntity : BaseLookupEntity
+    where TEntity : BaseLookupEntity<TEntity>
 {
     protected QueryLookupRepository(DbContext dbContext) : base(dbContext)
     {

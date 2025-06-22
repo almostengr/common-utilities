@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Almostengr.Common.DomainServices.Results;
 
 namespace Almostengr.Common.Domain;
 
@@ -7,11 +6,14 @@ public abstract class BaseEntity
 {
     protected BaseEntity() { }
 
-    protected BaseEntity(Guid guid, string modifiedBy)
+    protected BaseEntity(Guid guid, string modifiedBy) : this(guid)
+    {
+        SetModified(modifiedBy);
+    }
+
+    protected BaseEntity(Guid guid)
     {
         Guid = guid;
-        ModifiedDate = DateTime.UtcNow;
-        ModifiedBy = modifiedBy;
     }
 
     [Key]
@@ -19,7 +21,7 @@ public abstract class BaseEntity
 
     public Guid Guid { get; protected set; }
 
-    [Required, MaxLength(100)]
+    [Required, MaxLength(LibConstants.MediumLength)]
     public string ModifiedBy { get; protected set; }
 
     public DateTime ModifiedDate { get; protected set; }
