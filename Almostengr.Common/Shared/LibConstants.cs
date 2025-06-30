@@ -1,4 +1,4 @@
-namespace Almostengr.Common.Domain;
+namespace Almostengr.Common.Shared;
 
 public static class LibConstants
 {
