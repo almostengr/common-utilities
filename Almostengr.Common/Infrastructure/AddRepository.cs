@@ -17,4 +17,9 @@ public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<T
     {
         await _dbContext.SaveChangesAsync();
     }
+
+    public virtual async Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await _dbContext.Database.BeginTransactionAsync();
+    }
 }
