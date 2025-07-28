@@ -14,7 +14,7 @@ public abstract class BaseEntity
 
     protected BaseEntity(Guid guid)
     {
-        Guid = guid;
+        Guid = guid == Guid.Empty ? Guid.NewGuid() : guid;
     }
 
     [Key]

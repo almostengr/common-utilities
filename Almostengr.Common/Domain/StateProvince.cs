@@ -11,6 +11,6 @@ public class StateProvince : BaseLookupEntity<StateProvince>
     public override Result<StateProvince> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
     {
         StateProvince stateProvince = new(guid);
-        return stateProvince.Update(shortDescription, fullDescription, true, modifiedBy);
+        return stateProvince.Update(shortDescription,  true, modifiedBy, sortOrder, fullDescription);
     }
 }

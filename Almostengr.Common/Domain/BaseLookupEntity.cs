@@ -14,7 +14,6 @@ public abstract class BaseLookupEntity<T> : BaseEntity where T : BaseLookupEntit
 
     protected BaseLookupEntity(Guid guid) : base(guid)
     {
-        Guid = guid;
         IsActive = true;
     }
 
@@ -32,23 +31,13 @@ public abstract class BaseLookupEntity<T> : BaseEntity where T : BaseLookupEntit
     public abstract Result<T> Create(
         Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1);
 
-    public Result<T> Update(string shortDescription, bool isActive, string modifiedBy, int sortOrder = 1)
+    public Result<T> Update(string shortDescription, bool isActive, string modifiedBy, int sortOrder = 1, string fullDescription = null)
     {
         ShortDescription = shortDescription;
         IsActive = isActive;
         SortOrder = sortOrder;
-        SetModified(modifiedBy);
-        return Result<T>.Success((T)this);
-    }
-
-    public Result<T> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
-    {
-        ShortDescription = shortDescription;
         FullDescription = fullDescription;
-        IsActive = isActive;
-        SortOrder = sortOrder;
         SetModified(modifiedBy);
-
         return Result<T>.Success((T)this);
     }
 }

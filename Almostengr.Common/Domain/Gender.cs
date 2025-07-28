@@ -11,6 +11,6 @@ public class Gender : BaseLookupEntity<Gender>
     public override Result<Gender> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
     {
         Gender gender = new(guid);
-        return gender.Update(shortDescription, fullDescription, isActive, modifiedBy);
+        return gender.Update(shortDescription, isActive, modifiedBy, sortOrder, fullDescription);
     }
 }
