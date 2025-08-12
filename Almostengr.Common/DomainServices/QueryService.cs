@@ -24,17 +24,6 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return entities.Select(_mapper.ToResource).ToList();
     }
 
-    public async Task<bool> ExistsByIdAsync(int id)
-    {
-        return await _repository.ExistsByIdAsync(id);
-    }
-
-    public async Task<TResource> GetByIdAsync(int id)
-    {
-        TEntity entity = await _repository.GetByIdAsync(id);
-        return _mapper.ToResource(entity);
-    }
-
     public async Task<bool> ExistsByGuidAsync(Guid guid)
     {
         return await _repository.ExistsByGuidAsync(guid);
