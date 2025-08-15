@@ -22,7 +22,8 @@ public static class CommonExtensions
 
     public static void AddCommonLookupServices(this IServiceCollection services)
     {
-        services.AddTransient(typeof(IQueryLookupRepository<>), typeof(QueryLookupRepository<>));
-        services.AddTransient(typeof(IQueryLookupService<,>), typeof(QueryLookupService<,>));
+        services.AddTransient(typeof(ILookupRepository<>), typeof(LookupRepository<>));
+        services.AddTransient(typeof(ILookupMapper<,>), typeof(LookupMapper<>));
+        services.AddTransient(typeof(ILookupService<,>), typeof(LookupService<,>));
     }
 }
