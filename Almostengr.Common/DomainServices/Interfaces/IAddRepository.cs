@@ -6,4 +6,5 @@ public interface IAddRepository<TEntity> : IQueryRepository<TEntity> where TEnti
 {
     Task AddAsync(TEntity entity);
     Task SaveChangesAsync();
+    Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync();
 }

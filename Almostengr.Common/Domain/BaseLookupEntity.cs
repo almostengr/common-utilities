@@ -1,37 +1,43 @@
 using System.ComponentModel.DataAnnotations;
 using Almostengr.Common.DomainServices.Results;
+using Almostengr.Common.Shared;
 
 namespace Almostengr.Common.Domain;
 
-public abstract class BaseLookupEntity : BaseEntity
+public abstract class BaseLookupEntity<T> : BaseEntity where T : BaseLookupEntity<T>
 {
-    private BaseLookupEntity(Guid guid, string shortDescription, string fullDescription)
+    protected BaseLookupEntity(Guid guid, string shortDescription, string fullDescription) : base(guid)
     {
         ShortDescription = shortDescription;
         FullDescription = fullDescription;
+    }
+
+    protected BaseLookupEntity(Guid guid) : base(guid)
+    {
         IsActive = true;
     }
 
     protected BaseLookupEntity() : base() { }
 
-    [Required, StringLength(100)]
+    [Required, StringLength(LibConstants.ShortLength)]
     public string ShortDescription { get; protected set; }
 
-    [StringLength(500)]
+    [StringLength(LibConstants.LongLength)]
     public string FullDescription { get; protected set; }
 
     public bool IsActive { get; protected set; }
+    public int SortOrder { get; protected set; } = 1;
 
-    public abstract Result<BaseLookupEntity> Create(
-        Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy);
+    public abstract Result<T> Create(
+        Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1);
 
-    public Result<BaseLookupEntity> Update(string shortDescription, string fullDescription, bool isActive, string modifiedBy)
+    public Result<T> Update(string shortDescription, bool isActive, string modifiedBy, int sortOrder = 1, string fullDescription = null)
     {
         ShortDescription = shortDescription;
-        FullDescription = fullDescription;
         IsActive = isActive;
+        SortOrder = sortOrder;
+        FullDescription = fullDescription;
         SetModified(modifiedBy);
-
-        return Result<BaseLookupEntity>.Success(this);
+        return Result<T>.Success((T)this);
     }
 }
