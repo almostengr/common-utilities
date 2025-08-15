@@ -2,10 +2,11 @@
 
 C# library with code that I often use with custom applications. This library
 includes the Result pattern and generics for database driven applications.
-
-This class library was created for common methods that I use in the applications that I build. 
 These include, but are not limited to, methods and classes to make changes to entities, generic 
 repository methods, and generic service classes.
+
+By using this class library, it reduces the needs to code common functionality and features in every
+application that I am creating. 
 
 ## Entity Types
 
@@ -41,7 +42,7 @@ public class Person : BaseEntity
 }
 ```
 
-## Example Repository Implementation
+## Example Repository Layer Implementation
 
 ```cs
 public sealed class PersonRepository<Person> : QueryRepository<Person>, IQueryRepository<Person>
@@ -60,16 +61,14 @@ public sealed class PersonRepository<Person> : QueryRepository<Person>, IQueryRe
 }
 ```
 
-## Example Service Implementation
+## Example Service Layer Implementation
 
 ```cs
 public sealed class QueryPersonService<Person, PersonResource> : IQueryService<Person, PersonResource>
 {
     private readonly IPersonRepository<Person> _repository;
 
-    public QueryPersonService(
-        IPersonRepository<Person> repository
-    )
+    public QueryPersonService(IPersonRepository<Person> repository)
     {
         _repository = repository;
     }
@@ -78,4 +77,8 @@ public sealed class QueryPersonService<Person, PersonResource> : IQueryService<P
 }
 ```
 
+## Issues and Feature Requests
 
+Any issues, bugs, or feature requests for this library, should be submitted to its Github repository.
+When submitting the request, be sure to use the appropriate template. Requests that are not submitted 
+using the appropriate template, may be ignored or rejected.
