@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using Almostengr.Common.DomainServices.Resources;
 
 namespace Almostengr.Common.Infrastructure;
 
@@ -19,7 +18,7 @@ public static class HttpClientExtensions
         response.EnsureSuccessStatusCode();
     }
 
-    public static StringContent SerializeRequestBody<TResource>(this TResource request) where TResource : BaseResource
+    public static StringContent SerializeRequestBody<TResource>(this TResource request) where TResource : class
     {
         _ = request ?? throw new ArgumentNullException(nameof(request));
 
@@ -28,7 +27,7 @@ public static class HttpClientExtensions
         return content;
     }
 
-    public static async Task<TResource> DeserializeResponseBodyAsync<TResource>(this HttpResponseMessage response) where TResource : BaseResource
+    public static async Task<TResource> DeserializeResponseBodyAsync<TResource>(this HttpResponseMessage response) where TResource : class
     {
         _ = response ?? throw new ArgumentNullException(nameof(response));
 
@@ -56,7 +55,7 @@ public static class HttpClientExtensions
         return "http://" + url;
     }
 
-    public static async Task<string> GetStringAsync<TResource>(this HttpClient httpClient, string route) where TResource : BaseResource
+    public static async Task<string> GetStringAsync<TResource>(this HttpClient httpClient, string route) where TResource : class
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));
@@ -66,7 +65,7 @@ public static class HttpClientExtensions
         return await response.Content.ReadAsStringAsync();
     }
 
-    public static async Task<TResource> GetAsync<TResource>(this HttpClient httpClient, string route) where TResource : BaseResource
+    public static async Task<TResource> GetAsync<TResource>(this HttpClient httpClient, string route) where TResource : class
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));
@@ -77,7 +76,7 @@ public static class HttpClientExtensions
     }
 
     public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
-        where TResource : BaseResource where XResource : BaseResource
+        where TResource : class where XResource : class
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));
@@ -90,7 +89,7 @@ public static class HttpClientExtensions
     }
 
     public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
-        where TResource : BaseResource where XResource : BaseResource
+        where TResource : class where XResource : class
     {
         _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _ = route ?? throw new ArgumentNullException(nameof(route));
