@@ -1,7 +1,6 @@
 using Almostengr.Common.Domain;
 using Almostengr.Common.DomainServices.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Almostengr.Common.Infrastructure;
 
@@ -19,11 +18,6 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
     public virtual async Task<IEnumerable<TEntity>> GetListAsync()
     {
         return await _dbSet.ToListAsync();
-    }
-
-    public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
-    {
-        return await _dbSet.Where(predicate).ToListAsync();
     }
 
     public virtual async Task<TEntity> GetByGuidAsync(Guid guid)

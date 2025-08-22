@@ -6,32 +6,25 @@ namespace Almostengr.Common.Infrastructure;
 
 public static class HttpClientExtensions
 {
-    private static async Task WasRequestSuccessfulAsync(this HttpResponseMessage response)
-    {
-        if (response.StatusCode >= HttpStatusCode.InternalServerError ||
-            response.StatusCode == HttpStatusCode.RequestTimeout)
-        {
-            string body = await response.Content.ReadAsStringAsync();
-            throw new ServerErrorException(response.StatusCode, body);
-        }
-
-        response.EnsureSuccessStatusCode();
-    }
-
     public static StringContent SerializeRequestBody<TResource>(this TResource request) where TResource : class
     {
-        _ = request ?? throw new ArgumentNullException(nameof(request));
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
         string json = JsonSerializer.Serialize(request);
-        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+        StringContent content = new(json, Encoding.UTF8, "application/json");
         return content;
     }
 
     public static async Task<TResource> DeserializeResponseBodyAsync<TResource>(this HttpResponseMessage response) where TResource : class
     {
-        _ = response ?? throw new ArgumentNullException(nameof(response));
+        ArgumentNullException.ThrowIfNull(response, nameof(response));
 
-        var result = await response.Content.ReadAsStringAsync();
+        string result = await response.Content.ReadAsStringAsync();
+
+        if (response.StatusCode >= HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.RequestTimeout)
+        {
+            throw new ServerErrorException(response.StatusCode, result);
+        }
 
         JsonSerializerOptions serializeOptions = new JsonSerializerOptions
         {
@@ -41,72 +34,64 @@ public static class HttpClientExtensions
         return JsonSerializer.Deserialize<TResource>(result, serializeOptions)!;
     }
 
-    public static string GetUrlWithProtocol(this string url)
+    public static async Task<bool> GetBoolAsync(this HttpClient httpClient, string route)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
 
-        if (url.ToLower().StartsWith("http"))
-        {
-            return url;
-        }
-
-        url = url.EndsWith("/") ? url.Substring(0, url.Length - 1) : url;
-
-        return "http://" + url;
+        var response = await httpClient.GetAsync(route);
+        return response.IsSuccessStatusCode;
     }
 
     public static async Task<string> GetStringAsync<TResource>(this HttpClient httpClient, string route) where TResource : class
     {
-        _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _ = route ?? throw new ArgumentNullException(nameof(route));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
 
         var response = await httpClient.GetAsync(route);
-        await response.WasRequestSuccessfulAsync();
         return await response.Content.ReadAsStringAsync();
     }
 
     public static async Task<TResource> GetAsync<TResource>(this HttpClient httpClient, string route) where TResource : class
     {
-        _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _ = route ?? throw new ArgumentNullException(nameof(route));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
 
         var response = await httpClient.GetAsync(route);
-        await response.WasRequestSuccessfulAsync();
         return await response.DeserializeResponseBodyAsync<TResource>();
     }
 
     public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
         where TResource : class where XResource : class
     {
-        _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _ = route ?? throw new ArgumentNullException(nameof(route));
-        _ = request ?? throw new ArgumentNullException(nameof(request));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-        var serializedRequest = request.SerializeRequestBody<TResource>();
+        var serializedRequest = request.SerializeRequestBody();
         var response = await httpClient.PostAsync(route, serializedRequest);
-        await response.WasRequestSuccessfulAsync();
         return await response.DeserializeResponseBodyAsync<XResource>();
     }
 
     public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
         where TResource : class where XResource : class
     {
-        _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _ = route ?? throw new ArgumentNullException(nameof(route));
-        _ = request ?? throw new ArgumentNullException(nameof(request));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-        var serializedRequest = request.SerializeRequestBody<TResource>();
+        var serializedRequest = request.SerializeRequestBody();
         var response = await httpClient.PutAsync(route, serializedRequest);
-        await response.WasRequestSuccessfulAsync();
         return await response.DeserializeResponseBodyAsync<XResource>();
     }
 
-    public static async Task DeleteAsync(this HttpClient httpClient, string route)
+    public static async Task<XResource> DeleteAsync<TResource, XResource>(this HttpClient httpClient, string route)
+        where TResource : class where XResource : class
     {
-        _ = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _ = route ?? throw new ArgumentNullException(nameof(route));
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentNullException.ThrowIfNull(route, nameof(route));
 
         var response = await httpClient.DeleteAsync(route);
-        await response.WasRequestSuccessfulAsync();
+        return await response.DeserializeResponseBodyAsync<XResource>();
     }
 }
