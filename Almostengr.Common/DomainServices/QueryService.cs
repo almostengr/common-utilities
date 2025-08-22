@@ -18,18 +18,18 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<TResource>> GetListAsync()
+    public virtual async Task<IEnumerable<TResource>> GetListAsync()
     {
         IEnumerable<TEntity> entities = await _repository.GetListAsync();
         return entities.Select(_mapper.ToResource).ToList();
     }
 
-    public async Task<bool> ExistsByGuidAsync(Guid guid)
+    public virtual async Task<bool> ExistsByGuidAsync(Guid guid)
     {
         return await _repository.ExistsByGuidAsync(guid);
     }
 
-    public async Task<TResource> GetByGuidAsync(Guid guid)
+    public virtual async Task<TResource> GetByGuidAsync(Guid guid)
     {
         TEntity entity = await _repository.GetByGuidAsync(guid);
         return _mapper.ToResource(entity);

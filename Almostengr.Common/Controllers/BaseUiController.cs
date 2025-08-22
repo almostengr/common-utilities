@@ -6,7 +6,7 @@ public abstract class BaseUiController : Controller
 {
     protected void AddErrorsToModelState(IReadOnlyList<string> errors)
     {
-        foreach (var error in errors)
+        foreach (string error in errors)
         {
             ModelState.AddModelError(string.Empty, error);
         }

@@ -11,7 +11,7 @@ public class LookupRepository<TEntity> : QueryRepository<TEntity>, ILookupReposi
     {
     }
 
-    public async Task<IEnumerable<TEntity>> GetListAsync(bool activeOnly = true)
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool activeOnly = true)
     {
         if (activeOnly)
         {

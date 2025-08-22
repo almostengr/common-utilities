@@ -18,7 +18,7 @@ public class LookupService<TEntity, TResource> : QueryService<TEntity, TResource
         _lookupRepository = repository;
     }
 
-    public async Task<IEnumerable<LookupResource>> GetListAsync(bool activeOnly = true)
+    public virtual async Task<IEnumerable<LookupResource>> GetListAsync(bool activeOnly = true)
     {
         IEnumerable<TEntity> entities = await _lookupRepository.GetListAsync(activeOnly);
         return entities.Select(_mapper.ToResource).ToList();
