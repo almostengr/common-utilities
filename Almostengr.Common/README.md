@@ -77,6 +77,32 @@ public sealed class QueryPersonService<Person, PersonResource> : IQueryService<P
 }
 ```
 
+## Example API Key Middleware
+
+In the Program.cs file, add the below:
+
+```cs
+app.UserMiddleware<ApiKeyMiddleware>();
+```
+
+Also add one of the following (not both) to the Program.cs file: 
+
+```cs
+builder.Services.AddApiKeySettingsServices();
+```
+
+or 
+
+```cs
+builder.Services.AddApiKeyDbServices();
+```
+
+In your ApplicationDbContext.cs file, or similarly named file for your DbContext, add the following: 
+
+```cs
+public required DbSet<ApiKey> ApiKeys {get; set;}
+```
+
 ## Issues and Feature Requests
 
 Any issues, bugs, or feature requests for this library, should be submitted to its Github repository.
