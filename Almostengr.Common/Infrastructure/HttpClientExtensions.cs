@@ -15,13 +15,15 @@ public static class HttpClientExtensions
         return content;
     }
 
-    public static async Task<TResource> DeserializeResponseBodyAsync<TResource>(this HttpResponseMessage response) where TResource : class
+    public static async Task<TResource> DeserializeResponseBodyAsync<TResource>(this HttpResponseMessage response, bool throwOnBadRequests) where TResource : class
     {
         ArgumentNullException.ThrowIfNull(response, nameof(response));
 
         string result = await response.Content.ReadAsStringAsync();
 
-        if (response.StatusCode >= HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.RequestTimeout)
+        if (response.StatusCode >= HttpStatusCode.InternalServerError ||
+            response.StatusCode == HttpStatusCode.RequestTimeout ||
+            (throwOnBadRequests && response.StatusCode >= HttpStatusCode.BadRequest))
         {
             throw new ServerErrorException(response.StatusCode, result);
         }
@@ -52,16 +54,16 @@ public static class HttpClientExtensions
         return await response.Content.ReadAsStringAsync();
     }
 
-    public static async Task<TResource> GetAsync<TResource>(this HttpClient httpClient, string route) where TResource : class
+    public static async Task<TResource> GetAsync<TResource>(this HttpClient httpClient, string route, bool throwOnBadRequests = false) where TResource : class
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(route, nameof(route));
 
         var response = await httpClient.GetAsync(route);
-        return await response.DeserializeResponseBodyAsync<TResource>();
+        return await response.DeserializeResponseBodyAsync<TResource>(throwOnBadRequests);
     }
 
-    public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
+    public static async Task<XResource> PostAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request, bool throwOnBadRequests = false)
         where TResource : class where XResource : class
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -70,10 +72,10 @@ public static class HttpClientExtensions
 
         var serializedRequest = request.SerializeRequestBody();
         var response = await httpClient.PostAsync(route, serializedRequest);
-        return await response.DeserializeResponseBodyAsync<XResource>();
+        return await response.DeserializeResponseBodyAsync<XResource>(throwOnBadRequests);
     }
 
-    public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request)
+    public static async Task<XResource> PutAsync<TResource, XResource>(this HttpClient httpClient, string route, TResource request, bool throwOnBadRequests = false)
         where TResource : class where XResource : class
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -82,16 +84,16 @@ public static class HttpClientExtensions
 
         var serializedRequest = request.SerializeRequestBody();
         var response = await httpClient.PutAsync(route, serializedRequest);
-        return await response.DeserializeResponseBodyAsync<XResource>();
+        return await response.DeserializeResponseBodyAsync<XResource>(throwOnBadRequests);
     }
 
-    public static async Task<XResource> DeleteAsync<TResource, XResource>(this HttpClient httpClient, string route)
+    public static async Task<XResource> DeleteAsync<TResource, XResource>(this HttpClient httpClient, string route, bool throwOnBadRequests = false)
         where TResource : class where XResource : class
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(route, nameof(route));
 
         var response = await httpClient.DeleteAsync(route);
-        return await response.DeserializeResponseBodyAsync<XResource>();
+        return await response.DeserializeResponseBodyAsync<XResource>(throwOnBadRequests);
     }
 }
