@@ -16,5 +16,5 @@ public abstract class BaseCommandService<TResource, TService> : ICommandService<
         _logger = logger;
     }
 
-    public abstract Task<Result<TResource>> ExecuteAsync(TResource resource);
+    public abstract Task<Result<TResource>> ExecuteAsync(TResource resource, bool commitTransaction = true);
 }

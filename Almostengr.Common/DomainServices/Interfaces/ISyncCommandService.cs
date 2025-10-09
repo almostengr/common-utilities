@@ -5,5 +5,5 @@ namespace Almostengr.Common.DomainServices.Interfaces;
 
 public interface ISyncCommandService<TResource> where TResource : BaseResource
 {
-    Result<TResource> Execute(TResource resource);
+    Result<TResource> Execute(TResource resource, bool commitTransaction = true);
 }
