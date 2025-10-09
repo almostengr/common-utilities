@@ -34,4 +34,16 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         TEntity entity = await _repository.GetByGuidAsync(guid);
         return _mapper.ToResource(entity);
     }
+
+    public async Task<IEnumerable<TEntity>> GetEntityListAsync()
+    {
+        IEnumerable<TEntity> entities = await _repository.GetListAsync();
+        return entities;
+    }
+
+    public async Task<TEntity> GetEntityByGuidAsync(Guid guid)
+    {
+        TEntity entity = await _repository.GetByGuidAsync(guid);
+        return entity;
+    }
 }

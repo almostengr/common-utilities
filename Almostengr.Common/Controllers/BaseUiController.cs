@@ -21,4 +21,14 @@ public abstract class BaseUiController : Controller
     {
         return View("NotAuthorized");
     }
+
+    protected IActionResult NotFoundParitalView()
+    {
+        return PartialView("_NotFound");
+    }
+
+    protected IActionResult NotAuthorizedPartialView()
+    {
+        return PartialView("_NotAuthorized");
+    }
 }

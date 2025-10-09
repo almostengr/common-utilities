@@ -1,6 +1,7 @@
 using Almostengr.Common.DomainServices;
 using Almostengr.Common.DomainServices.Interfaces;
 using Almostengr.Common.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -25,5 +26,17 @@ public static class CommonExtensions
         services.AddTransient(typeof(ILookupRepository<>), typeof(LookupRepository<>));
         services.AddTransient(typeof(ILookupMapper<,>), typeof(LookupMapper<>));
         services.AddTransient(typeof(ILookupService<,>), typeof(LookupService<,>));
+    }
+
+    public static void AddApiKeyDbServices(this IServiceCollection services)
+    {
+        services.AddTransient<IApiKeyRepository, ApiKeyRepository>();
+        services.AddTransient<IApiKeyService, ApiKeyDbService>();
+    }
+
+    public static void AddApiKeySettingsServices(this IServiceCollection services, IConfigurationManager configurationManager)
+    {
+        // todo - configuration
+        services.AddTransient<IApiKeyService, ApiKeySettingsService>();
     }
 }

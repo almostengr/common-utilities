@@ -5,5 +5,5 @@ namespace Almostengr.Common.DomainServices.Interfaces;
 
 public interface ICommandService<TResource> where TResource : BaseResource
 {
-    Task<Result<TResource>> ExecuteAsync(TResource resource);
+    Task<Result<TResource>> ExecuteAsync(TResource resource, bool commitTransaction = true);
 }

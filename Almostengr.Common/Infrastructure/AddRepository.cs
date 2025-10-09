@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Almostengr.Common.Infrastructure;
 
-public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<TEntity> where TEntity : BaseEntity
+public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<TEntity> 
+    where TEntity : BaseEntity
 {
     protected AddRepository(DbContext context) : base(context) { }
 
@@ -21,5 +22,10 @@ public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<T
     public virtual async Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync()
     {
         return await _dbContext.Database.BeginTransactionAsync();
+    }
+
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        await _dbSet.AddRangeAsync(entities);
     }
 }
