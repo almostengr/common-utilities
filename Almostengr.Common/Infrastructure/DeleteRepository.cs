@@ -12,4 +12,14 @@ public class DeleteRepository<TEntity> : UpdateRepository<TEntity>, IDeleteRepos
     {
         _dbSet.Remove(entity);
     }
+
+    public virtual void Remove(TEntity entity)
+    {
+        _dbSet.Remove(entity);
+    }
+
+    public virtual void RemoveRange(IEnumerable<TEntity> entities)
+    {
+        _dbSet.RemoveRange(entities);
+    }
 }
