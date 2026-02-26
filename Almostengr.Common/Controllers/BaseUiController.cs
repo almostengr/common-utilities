@@ -32,3 +32,31 @@ public abstract class BaseUiController : Controller
         return PartialView("_NotAuthorized");
     }
 }
+public abstract class TestController : Controller
+{
+    [HttpGet]
+    public abstract Task<IActionResult> Index();
+
+    protected async Task<TestResult> ExecuteTest<T>(string name, string domain, Func<Task<T>> action)
+    {
+        try
+        {
+            var data = await action();
+            return new TestResult{
+                TestName = name,
+                Passed = true,
+                Message = "Passed",
+                Data = data
+            };
+        }
+        catch (Exception ex)
+        {
+            return new TestResult{
+                TestName = name,
+                Passed = false,
+                Message = ex.Message,
+                Data = null
+            };
+        }
+    }
+}
