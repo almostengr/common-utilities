@@ -7,9 +7,11 @@ public abstract class BaseEntity
 {
     protected BaseEntity() { }
 
-    protected BaseEntity(Guid guid, string modifiedBy) : this(guid)
+    protected BaseEntity(Guid guid, string createdBy) : this(guid)
     {
-        SetModified(modifiedBy);
+        CreatedBy = createdBy;
+        CreatedDate = DateTime.UtcNow;
+        SetModified(createdBy);
     }
 
     protected BaseEntity(Guid guid)
@@ -21,6 +23,11 @@ public abstract class BaseEntity
     public int Id { get; protected set; }
 
     public Guid Guid { get; protected set; }
+
+    [Required, StringLength(LibConstants.MediumLength)]
+    public string CreatedBy { get; protected set; }
+
+    public DateTime CreatedDate { get; protected set; }
 
     [Required, MaxLength(LibConstants.MediumLength)]
     public string ModifiedBy { get; protected set; }
