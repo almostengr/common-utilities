@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Almostengr.Common.Infrastructure;
 
 public class LookupRepository<TEntity> : QueryRepository<TEntity>, ILookupRepository<TEntity>
-    where TEntity : BaseLookupEntity<TEntity>
+    where TEntity : LookupEntity<TEntity>
 {
     protected LookupRepository(DbContext dbContext) : base(dbContext)
     {

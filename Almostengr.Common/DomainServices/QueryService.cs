@@ -5,7 +5,7 @@ using Almostengr.Common.DomainServices.Resources;
 namespace Almostengr.Common.DomainServices;
 
 public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource>
-    where TEntity : BaseEntity where TResource : BaseResource
+    where TEntity : Entity where TResource : Resource
 {
     protected readonly IQueryRepository<TEntity> _repository;
     protected readonly IMapper<TEntity, TResource> _mapper;
@@ -24,14 +24,14 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return entities.Select(_mapper.ToResource).ToList();
     }
 
-    public virtual async Task<bool> ExistsByGuidAsync(Guid guid)
+    public virtual async Task<bool> ExistsByGuidAsync(Guid publicId)
     {
-        return await _repository.ExistsByGuidAsync(guid);
+        return await _repository.ExistsByPublicIdAsync(publicId);
     }
 
-    public virtual async Task<TResource> GetByGuidAsync(Guid guid)
+    public virtual async Task<TResource> GetByGuidAsync(Guid publicId)
     {
-        TEntity entity = await _repository.GetByGuidAsync(guid);
+        TEntity entity = await _repository.GetByPublicIdAsync(publicId);
         return _mapper.ToResource(entity);
     }
 
@@ -41,9 +41,9 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return entities;
     }
 
-    public async Task<TEntity> GetEntityByGuidAsync(Guid guid)
+    public async Task<TEntity> GetEntityByGuidAsync(Guid publicId)
     {
-        TEntity entity = await _repository.GetByGuidAsync(guid);
+        TEntity entity = await _repository.GetByPublicIdAsync(publicId);
         return entity;
     }
 }

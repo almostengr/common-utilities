@@ -1,4 +1,5 @@
 using Almostengr.Common.DomainServices.Interfaces;
+using Almostengr.Common.Shared;
 using Microsoft.Extensions.Logging;
 
 namespace Almostengr.Common.DomainServices;
@@ -22,7 +23,7 @@ public class ApiKeyDbService : IApiKeyService
 
         if (!isValid)
         {
-            _logger.LogError("Invalid API Key");
+            _logger.LogError(LibConstants.InvalidApiKey);
         }
 
         return isValid;

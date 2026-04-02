@@ -10,15 +10,15 @@ application that I am creating.
 
 ## Entity Types
 
-### BaseLookupEntity
+### LookupEntity
 
 This type should be used as a base class for any lookup values. Examples include, but is not limited to, 
 states, gender, bank account types, etc. It has predefined properties that are often used with lookup 
 types, but can be extended to fit the type of your creation.
 
-### BaseEntity 
+### Entity 
 
-BaseEntity should be used for any other type of entity that does not meet any of the above criteria. Examples of
+Entity should be used for any other type of entity that does not meet any of the above criteria. Examples of
 this includes, but is not limited to, people, car brands, and other real world objects that need to be 
 modeled in your application.
 
@@ -34,7 +34,7 @@ builder.Services.AddCommonServices();
 ## Example Entity Implementation
 
 ```cs
-public class Person : BaseEntity
+public class Person : Entity
 {
     public string FirstName {get;private set;}
 

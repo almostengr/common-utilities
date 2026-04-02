@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Almostengr.Common.Infrastructure;
 
-public class DeleteRepository<TEntity> : UpdateRepository<TEntity>, IDeleteRepository<TEntity> where TEntity : BaseEntity
+public class DeleteRepository<TEntity> : UpdateRepository<TEntity>, IDeleteRepository<TEntity> where TEntity : Entity
 {
     protected DeleteRepository(DbContext context) : base(context) { }
 

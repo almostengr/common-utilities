@@ -22,7 +22,7 @@ public class ApiKeySettingsService : IApiKeyService
         bool isValid = _settings.Keys.Contains(apiKey);
         if (!isValid)
         {
-            _logger.LogError("Invalid API Key");
+            _logger.LogError(LibConstants.InvalidApiKey);
         }
 
         return await Task.Run(() => isValid);

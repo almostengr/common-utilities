@@ -4,7 +4,7 @@ using Almostengr.Common.DomainServices.Resources;
 
 namespace Almostengr.Common.DomainServices;
 
-public abstract class LookupMapper<TEntity> : ILookupMapper<TEntity, LookupResource> where TEntity : BaseLookupEntity<TEntity>
+public abstract class LookupMapper<TEntity> : ILookupMapper<TEntity, LookupResource> where TEntity : LookupEntity<TEntity>
 {
     public LookupResource ToResource(TEntity entity)
     {
@@ -15,10 +15,12 @@ public abstract class LookupMapper<TEntity> : ILookupMapper<TEntity, LookupResou
 
         return new LookupResource
         {
-            Guid = entity.Guid,
+            PublicId = entity.PublicId,
             IsActive = entity.IsActive,
             ShortDescription = entity.ShortDescription,
             FullDescription = entity.FullDescription,
+            CreatedBy = entity.CreatedBy,
+            CreatedDate = entity.CreatedDate,
             ModifiedBy = entity.ModifiedBy,
             ModifiedDate = entity.ModifiedDate,
         };

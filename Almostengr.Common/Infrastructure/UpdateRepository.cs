@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Almostengr.Common.Infrastructure;
 
 public class UpdateRepository<TEntity> : AddRepository<TEntity>, IUpdateRepository<TEntity>
-    where TEntity : BaseEntity
+    where TEntity : Entity
 {
     protected UpdateRepository(DbContext context) : base(context) { }
 
