@@ -1,6 +1,6 @@
 namespace Almostengr.Common.Domain;
 
-public enum GenderEnum
+public enum GenderOption
 {
     Female = 1,
     Male = 2,

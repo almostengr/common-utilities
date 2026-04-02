@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Almostengr.Common.Infrastructure;
 
-public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<TEntity> 
-    where TEntity : BaseEntity
+public class AddRepository<TEntity> : QueryRepository<TEntity>, IAddRepository<TEntity>
+    where TEntity : Entity
 {
     protected AddRepository(DbContext context) : base(context) { }
 

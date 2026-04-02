@@ -1,4 +1,5 @@
 using Almostengr.Common.DomainServices.Interfaces;
+using Almostengr.Common.Shared;
 using Microsoft.AspNetCore.Http;
 
 namespace Almostengr.Common.Infrastructure;
@@ -7,7 +8,6 @@ public class ApiKeyMiddleware
 {
     private readonly RequestDelegate _next;
     public readonly IApiKeyService _apiKeyService;
-    private const string INVALID_MESSAGE = "Invalid API Key";
 
     public ApiKeyMiddleware(
         RequestDelegate next,
@@ -23,14 +23,14 @@ public class ApiKeyMiddleware
         if (!context.Request.Headers.TryGetValue("X-Api-Key", out var apiKey))
         {
             context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(INVALID_MESSAGE);
+            await context.Response.WriteAsync(LibConstants.InvalidApiKey);
             return;
         }
 
         if (!await _apiKeyService.IsValidApiKeyAsync(apiKey))
         {
             context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(INVALID_MESSAGE);
+            await context.Response.WriteAsync(LibConstants.InvalidApiKey);
             return;
         }
 

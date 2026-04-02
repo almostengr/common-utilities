@@ -3,6 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Almostengr.Common.Controllers;
 
 [ApiController]
-public abstract class BaseApiController : Controller
+public abstract class ApiController : Controller
 {
 }

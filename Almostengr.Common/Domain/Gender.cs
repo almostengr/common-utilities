@@ -2,15 +2,16 @@ using Almostengr.Common.DomainServices.Results;
 
 namespace Almostengr.Common.Domain;
 
-public class Gender : BaseLookupEntity<Gender>
+public class Gender : LookupEntity<Gender>
 {
-    public Gender(Guid guid) : base(guid)
+    private Gender(Guid publicId, string createdBy) : base(publicId, createdBy)
     {
     }
 
-    public override Result<Gender> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
+    public override Result<Gender> Create(
+        Guid publicId, string shortDescription, bool isActive, string createdBy, int sortOrder = 1, string fullDescription = null)
     {
-        Gender gender = new(guid);
-        return gender.Update(shortDescription, isActive, modifiedBy, sortOrder, fullDescription);
+        Gender gender = new(publicId, createdBy);
+        return gender.Update(shortDescription, isActive, createdBy, sortOrder, fullDescription);
     }
 }

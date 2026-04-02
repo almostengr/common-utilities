@@ -1,16 +1,18 @@
+using System.ComponentModel;
 using Almostengr.Common.DomainServices.Results;
 
 namespace Almostengr.Common.Domain;
 
-public class Country : BaseLookupEntity<Country>
+public class Country : LookupEntity<Country>
 {
-    private Country() { }
-
-    private Country(Guid guid) : base(guid) { }
-
-    public override Result<Country> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
+    private Country(Guid publicId, string createdBy) : base(publicId, createdBy)
     {
-        Country country = new(guid);
-        return country.Update(shortDescription,  true, modifiedBy, sortOrder, fullDescription);
+    }
+
+    public override Result<Country> Create(
+        Guid publicId, string shortDescription, bool isActive, string createdBy, int sortOrder = 1, string fullDescription = null)
+    {
+        Country country = new(publicId, createdBy);
+        return country.Update(shortDescription, isActive, createdBy, sortOrder, fullDescription);
     }
 }
