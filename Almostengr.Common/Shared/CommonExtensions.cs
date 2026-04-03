@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Reflection;
 using Almostengr.Common.DomainServices;
 using Almostengr.Common.DomainServices.Interfaces;
 using Almostengr.Common.Infrastructure;
@@ -38,5 +40,17 @@ public static class CommonExtensions
     {
         // todo - configuration
         services.AddTransient<IApiKeyService, ApiKeySettingsService>();
+    }
+
+    public static string ToDescription(this Enum enumValue)
+    {
+        FieldInfo field = enumValue.GetType().GetField(enumValue.ToString());
+        if (field == null)
+        {
+            return enumValue.ToString();
+        }
+        var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+
+        return attribute?.Description ?? enumValue.ToString();
     }
 }

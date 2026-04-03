@@ -3,11 +3,11 @@ using Almostengr.Common.DomainServices.Resources;
 
 namespace Almostengr.Common.DomainServices.Interfaces;
 
-public interface IQueryService<TEntity, TResource> where TEntity : BaseEntity where TResource : BaseResource
+public interface IQueryService<TEntity, TResource> where TEntity : Entity where TResource : Resource
 {
-    Task<IEnumerable<TResource>> GetListAsync();
-    Task<IEnumerable<TEntity>> GetEntityListAsync();
-    Task<bool> ExistsByGuidAsync(Guid guid);
-    Task<TResource> GetByGuidAsync(Guid guid);
-    Task<TEntity> GetEntityByGuidAsync(Guid guid);
+    Task<IEnumerable<TResource>> GetListAsync(bool sortDescending = false);
+    Task<IEnumerable<TEntity>> GetEntityListAsync(bool sortDescending = false);
+    Task<bool> ExistsByPublicIdAsync(Guid publicId);
+    Task<TResource> GetByGuidAsync(Guid publicId);
+    Task<TEntity> GetEntityByPublicIdAsync(Guid publicId);
 }

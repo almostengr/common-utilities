@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Almostengr.Common.DomainServices;
 
-public abstract class BaseCommandService<TResource, TService> : ICommandService<TResource>
+public abstract class CommandService<TResource, TService> : ICommandService<TResource>
     where TService : class
-    where TResource : BaseResource
+    where TResource : Resource
 {
     protected readonly ILogger<TService> _logger;
 
-    protected BaseCommandService(ILogger<TService> logger)
+    protected CommandService(ILogger<TService> logger)
     {
         _logger = logger;
     }

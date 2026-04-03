@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Almostengr.Common.Controllers;
 
-public abstract class BaseUiController : Controller
+public abstract class UiController : Controller
 {
     protected void AddErrorsToModelState(IReadOnlyList<string> errors)
     {

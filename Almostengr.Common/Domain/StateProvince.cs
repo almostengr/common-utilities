@@ -2,15 +2,16 @@ using Almostengr.Common.DomainServices.Results;
 
 namespace Almostengr.Common.Domain;
 
-public class StateProvince : BaseLookupEntity<StateProvince>
+public class StateProvince : LookupEntity<StateProvince>
 {
-    private StateProvince() { }
-
-    private StateProvince(Guid guid) : base(guid) { }
-
-    public override Result<StateProvince> Create(Guid guid, string shortDescription, string fullDescription, bool isActive, string modifiedBy, int sortOrder = 1)
+    private StateProvince(Guid publicId, string createdBy) : base(publicId, createdBy)
     {
-        StateProvince stateProvince = new(guid);
-        return stateProvince.Update(shortDescription,  true, modifiedBy, sortOrder, fullDescription);
+    }
+
+    public override Result<StateProvince> Create(
+        Guid publicId, string shortDescription, bool isActive, string createdBy, int sortOrder = 1, string fullDescription = null)
+    {
+        StateProvince stateProvince = new(publicId, createdBy);
+        return stateProvince.Update(shortDescription, true, createdBy, sortOrder, fullDescription);
     }
 }

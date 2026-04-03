@@ -5,7 +5,7 @@ using Almostengr.Common.DomainServices.Resources;
 namespace Almostengr.Common.DomainServices;
 
 public class LookupService<TEntity, TResource> : QueryService<TEntity, TResource>, ILookupService<TEntity, TResource>
-    where TEntity : BaseLookupEntity<TEntity>
+    where TEntity : LookupEntity<TEntity>
     where TResource : LookupResource
 {
     private readonly ILookupRepository<TEntity> _lookupRepository;
@@ -18,7 +18,7 @@ public class LookupService<TEntity, TResource> : QueryService<TEntity, TResource
         _lookupRepository = repository;
     }
 
-    public virtual async Task<IEnumerable<LookupResource>> GetListAsync(bool activeOnly = true)
+    public virtual async Task<IEnumerable<LookupResource>> GetListAsync(bool sortDescending = false, bool activeOnly = true)
     {
         IEnumerable<TEntity> entities = await _lookupRepository.GetListAsync(activeOnly);
         return entities.Select(_mapper.ToResource).ToList();

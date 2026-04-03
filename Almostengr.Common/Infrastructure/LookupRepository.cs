@@ -5,24 +5,26 @@ using Microsoft.EntityFrameworkCore;
 namespace Almostengr.Common.Infrastructure;
 
 public class LookupRepository<TEntity> : QueryRepository<TEntity>, ILookupRepository<TEntity>
-    where TEntity : BaseLookupEntity<TEntity>
+    where TEntity : LookupEntity<TEntity>
 {
     protected LookupRepository(DbContext dbContext) : base(dbContext)
     {
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool activeOnly = true)
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool sortDescending, bool activeOnly)
     {
+        IQueryable<TEntity> query = _dbSet.AsQueryable();
+
         if (activeOnly)
         {
-            return await _dbSet
-                .Where(l => l.IsActive == true)
-                .OrderBy(l => l.ShortDescription)
-                .ToListAsync();
+            query = query.Where(t => t.IsActive);
         }
 
-        return await _dbSet
-            .OrderBy(l => l.ShortDescription)
-            .ToListAsync();
+        if (sortDescending)
+        {
+            query = query.OrderByDescending(t => t.ShortDescription);
+        }
+
+        return await query.ToListAsync();
     }
 }
