@@ -11,7 +11,7 @@ public class LookupRepository<TEntity> : QueryRepository<TEntity>, ILookupReposi
     {
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool sortDescending = false, bool activeOnly = true)
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool sortDescending, bool activeOnly)
     {
         IQueryable<TEntity> query = _dbSet.AsQueryable();
 
