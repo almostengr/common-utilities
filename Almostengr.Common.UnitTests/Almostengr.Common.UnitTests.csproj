@@ -8,12 +8,12 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
 
-    <PackageId>Almostengr.Common.Tests</PackageId>
+    <PackageId>Almostengr.Common.UnitTests</PackageId>
     <Company>Robinson Handy and Technology Services LLC</Company>
     <Copyright>Copyright © $([System.DateTime]::UtcNow.ToString(yyyy)) Robinson Handy and Technology Services</Copyright>
     <Product>Almostengr Common Library Tests</Product>
     <Authors>Kenny Robinson</Authors>
-    <AssemblyName>Almostengr.Common.Tests</AssemblyName>
+    <AssemblyName>Almostengr.Common.UnitTests</AssemblyName>
     <RootNamespace>Almostengr.Common</RootNamespace>
     <Version>10.$([System.DateTime]::UtcNow.ToString(yyyy.MM.dd))</Version>
     <RepositoryUrl>https://github.com/almostengr/almostengr.common.git</RepositoryUrl>

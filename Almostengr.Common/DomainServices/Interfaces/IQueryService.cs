@@ -7,7 +7,7 @@ public interface IQueryService<TEntity, TResource> where TEntity : Entity where 
 {
     Task<IEnumerable<TResource>> GetListAsync(bool sortDescending = false);
     Task<IEnumerable<TEntity>> GetEntityListAsync(bool sortDescending = false);
-    Task<bool> ExistsByGuidAsync(Guid publicId);
+    Task<bool> ExistsByPublicIdAsync(Guid publicId);
     Task<TResource> GetByGuidAsync(Guid publicId);
-    Task<TEntity> GetEntityByGuidAsync(Guid publicId);
+    Task<TEntity> GetEntityByPublicIdAsync(Guid publicId);
 }

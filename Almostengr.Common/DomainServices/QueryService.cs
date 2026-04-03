@@ -20,28 +20,28 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
 
     public virtual async Task<IEnumerable<TResource>> GetListAsync(bool sortDescending = false)
     {
-        IEnumerable<TEntity> entities = await _repository.GetListAsync(sortDescending);
+        IEnumerable<TEntity> entities = await GetEntityListAsync(sortDescending);
         return entities.Select(_mapper.ToResource).ToList();
     }
 
-    public virtual async Task<bool> ExistsByGuidAsync(Guid publicId)
+    public virtual async Task<bool> ExistsByPublicIdAsync(Guid publicId)
     {
         return await _repository.ExistsByPublicIdAsync(publicId);
     }
 
     public virtual async Task<TResource> GetByGuidAsync(Guid publicId)
     {
-        TEntity entity = await _repository.GetByPublicIdAsync(publicId);
+        TEntity entity = await GetEntityByPublicIdAsync(publicId);
         return _mapper.ToResource(entity);
     }
 
     public virtual async Task<IEnumerable<TEntity>> GetEntityListAsync(bool sortDescending = false)
     {
-        IEnumerable<TEntity> entities = await _repository.GetListAsync();
+        IEnumerable<TEntity> entities = await _repository.GetListAsync(sortDescending);
         return entities;
     }
 
-    public virtual async Task<TEntity> GetEntityByGuidAsync(Guid publicId)
+    public virtual async Task<TEntity> GetEntityByPublicIdAsync(Guid publicId)
     {
         TEntity entity = await _repository.GetByPublicIdAsync(publicId);
         return entity;

@@ -1,6 +1,6 @@
 using Almostengr.Common.Shared;
 
-namespace Almostengr.Common.Tests.Extensions;
+namespace Almostengr.Common.UnitTests.Extensions;
 
 public class UnitConverterTests
 {

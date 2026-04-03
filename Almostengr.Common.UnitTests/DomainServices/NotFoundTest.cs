@@ -1,6 +1,6 @@
 using Almostengr.Common.DomainServices.Results;
 
-namespace Almostengr.Common.Tests;
+namespace Almostengr.Common.UnitTests;
 
 public class NotFoundTest
 {
