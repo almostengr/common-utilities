@@ -15,9 +15,16 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetListAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool sortDescending = false)
     {
-        return await _dbSet.ToListAsync();
+        IQueryable<TEntity> query = _dbSet.AsQueryable();
+
+        if (sortDescending)
+        {
+            query = query.OrderByDescending(t => t.Id);
+        }
+
+        return await query.ToListAsync();
     }
 
     public virtual async Task<TEntity> GetByPublicIdAsync(Guid publicId)

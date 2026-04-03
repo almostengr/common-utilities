@@ -11,18 +11,20 @@ public class LookupRepository<TEntity> : QueryRepository<TEntity>, ILookupReposi
     {
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool activeOnly = true)
+    public virtual async Task<IEnumerable<TEntity>> GetListAsync(bool sortDescending = false, bool activeOnly = true)
     {
+        IQueryable<TEntity> query = _dbSet.AsQueryable();
+
         if (activeOnly)
         {
-            return await _dbSet
-                .Where(l => l.IsActive == true)
-                .OrderBy(l => l.ShortDescription)
-                .ToListAsync();
+            query = query.Where(t => t.IsActive);
         }
 
-        return await _dbSet
-            .OrderBy(l => l.ShortDescription)
-            .ToListAsync();
+        if (sortDescending)
+        {
+            query = query.OrderByDescending(t => t.ShortDescription);
+        }
+
+        return await query.ToListAsync();
     }
 }

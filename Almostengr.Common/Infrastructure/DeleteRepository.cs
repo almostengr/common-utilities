@@ -8,11 +8,6 @@ public class DeleteRepository<TEntity> : UpdateRepository<TEntity>, IDeleteRepos
 {
     protected DeleteRepository(DbContext context) : base(context) { }
 
-    public virtual void Delete(TEntity entity)
-    {
-        _dbSet.Remove(entity);
-    }
-
     public virtual void Remove(TEntity entity)
     {
         _dbSet.Remove(entity);

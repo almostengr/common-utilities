@@ -8,7 +8,8 @@ public class StateProvince : LookupEntity<StateProvince>
     {
     }
 
-    public override Result<StateProvince> Create(Guid publicId, string shortDescription, bool isActive, string createdBy, int sortOrder = 1, string fullDescription = null)
+    public override Result<StateProvince> Create(
+        Guid publicId, string shortDescription, bool isActive, string createdBy, int sortOrder = 1, string fullDescription = null)
     {
         StateProvince stateProvince = new(publicId, createdBy);
         return stateProvince.Update(shortDescription, true, createdBy, sortOrder, fullDescription);
