@@ -29,7 +29,7 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
         return await _repository.ExistsByPublicIdAsync(publicId);
     }
 
-    public virtual async Task<TResource> GetByGuidAsync(Guid publicId)
+    public virtual async Task<TResource> GetByPublicIdAsync(Guid publicId)
     {
         TEntity entity = await GetEntityByPublicIdAsync(publicId);
         return _mapper.ToResource(entity);
@@ -44,6 +44,18 @@ public class QueryService<TEntity, TResource> : IQueryService<TEntity, TResource
     public virtual async Task<TEntity> GetEntityByPublicIdAsync(Guid publicId)
     {
         TEntity entity = await _repository.GetByPublicIdAsync(publicId);
+        return entity;
+    }
+
+    public virtual async Task<bool> ExistsByIdAsync(int id)
+    {
+        bool exist = await _repository.ExistsByIdAsync(id);
+        return exist;
+    }
+
+    public virtual async Task<TEntity> GetEntityByIdAsync(int id)
+    {
+        var entity = await _repository.GetByIdAsync(id);
         return entity;
     }
 }
