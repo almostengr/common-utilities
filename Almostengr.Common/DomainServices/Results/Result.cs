@@ -18,6 +18,11 @@ public class Result<TValue>
         }
     }
 
+    public string ToErrorString()
+    {
+        return string.Join(" ", _errors);
+    }
+
     public static Result<TValue> Create()
     {
         return new Result<TValue>(default, null);

@@ -29,21 +29,21 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
 
     public virtual async Task<TEntity> GetByPublicIdAsync(Guid publicId)
     {
-        return await _dbSet.Where(i => i.PublicId == publicId).SingleOrDefaultAsync();
+        return await _dbSet.SingleOrDefaultAsync(i => i.PublicId == publicId);
     }
 
     public virtual async Task<bool> ExistsByPublicIdAsync(Guid publicId)
     {
-        return await _dbSet.Where(i => i.PublicId == publicId).AnyAsync();
+        return await _dbSet.AnyAsync(i => i.PublicId == publicId);
     }
 
     public virtual async Task<TEntity> GetByIdAsync(int id)
     {
-        return await _dbSet.Where(i => i.Id == id).SingleOrDefaultAsync();
+        return await _dbSet.SingleOrDefaultAsync(i => i.Id == id);
     }
 
     public virtual async Task<bool> ExistsByIdAsync(int id)
     {
-        return await _dbSet.Where(i => i.Id == id).AnyAsync();
+        return await _dbSet.AnyAsync(i => i.Id == id);
     }
 }
