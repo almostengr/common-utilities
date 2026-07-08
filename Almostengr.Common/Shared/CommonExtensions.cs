@@ -3,6 +3,7 @@ using System.Reflection;
 using Almostengr.Common.DomainServices;
 using Almostengr.Common.DomainServices.Interfaces;
 using Almostengr.Common.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,14 @@ public static class CommonExtensions
 
         services.AddTransient(typeof(ILogger<>), typeof(Logger<>));
         services.AddTransient(typeof(IQueryService<,>), typeof(QueryService<,>));
+    }
+
+    public static void AddMvcServices(this IServiceCollection services)
+    {
+        services.Configure<RouteOptions>(options =>
+        {
+            options.LowercaseUrls = true;
+        });
     }
 
     public static void AddCommonLookupServices(this IServiceCollection services)
