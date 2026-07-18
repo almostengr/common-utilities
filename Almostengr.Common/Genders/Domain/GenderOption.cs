@@ -1,0 +1,8 @@
+namespace Almostengr.Common.Genders.Domain;
+
+public enum GenderOption
+{
+    Female = 1,
+    Male = 2,
+    Unknown = 3,
+}
