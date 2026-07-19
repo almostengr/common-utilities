@@ -8,7 +8,7 @@ namespace Almostengr.Common.Email.Shared;
 
 public static class EmailExtensions
 {
-    public static void AddEmailServies(this IServiceCollection services, IConfiguration configuration)
+    public static void AddEmailServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<ISendEmailService, SendEmailService>();
         services.AddTransient<IReadEmailService, ReadImapEmailService>();

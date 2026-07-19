@@ -2,6 +2,7 @@ using Almostengr.Common.Common.DomainServices.Results;
 using Almostengr.Common.Email.Shared;
 using MailKit;
 using MailKit.Net.Imap;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
@@ -10,44 +11,44 @@ namespace Almostengr.Common.Email.DomainServices;
 public class ReadImapEmailService : IReadEmailService
 {
     private readonly EmailSettings _emailSettings;
+    private readonly ILogger<ReadImapEmailService> _logger;
     private readonly IImapClient _client;
 
     public ReadImapEmailService(
         IOptions<EmailSettings> emailSettings,
-        IImapClient imapClient
+        IImapClient imapClient,
+        ILogger<ReadImapEmailService> logger
     )
     {
         _emailSettings = emailSettings.Value;
+        _logger = logger;
 
         _client = imapClient;
         _client.Connect(_emailSettings.Hostname, _emailSettings.PortNumber, _emailSettings.UseSsl);
         _client.Authenticate(_emailSettings.UserName, _emailSettings.Password);
     }
 
-    public async Task<Result<string>> ReadAllAsync(string folderName = "INBOX")
+    public async Task<Result<List<MimeMessage>>> ReadAllAsync(string folderName = "INBOX")
     {
         try
         {
             Result<string> connectionResult = IsConnectedAndAuthorized();
             if (connectionResult.Failed)
             {
-                return connectionResult;
+                return Result<List<MimeMessage>>.Failure(connectionResult.Errors);
             }
 
             var selectedFolder = SelectFolder(folderName);
 
             List<MimeMessage> messages = new();
+            messages.AddRange(selectedFolder);
 
-            for (int i = 0; i < selectedFolder.Count; i++)
-            {
-                messages.Add(selectedFolder.GetMessage(1));
-            }
-
-            return Result<string>.Success(null);
+            return Result<List<MimeMessage>>.Success(messages);
         }
         catch (Exception ex)
         {
-            return Result<string>.Failure(ex.Message);
+            _logger.LogError(ex, ex.Message);
+            return Result<List<MimeMessage>>.Failure(ex.Message);
         }
     }
 
@@ -65,7 +66,8 @@ public class ReadImapEmailService : IReadEmailService
 
             foreach (var messageId in messageIds)
             {
-                await selectedFolder.StoreAsync(messageId, new StoreFlagsRequest(StoreAction.Add, MessageFlags.Deleted));
+                await selectedFolder.StoreAsync(
+                    messageId, new StoreFlagsRequest(StoreAction.Add, MessageFlags.Deleted));
             }
 
             await selectedFolder.ExpungeAsync();
@@ -74,6 +76,7 @@ public class ReadImapEmailService : IReadEmailService
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, ex.Message);
             return Result<string>.Failure(ex.Message);
         }
     }
@@ -107,13 +110,15 @@ public class ReadImapEmailService : IReadEmailService
 
             foreach (var messageId in messageIds)
             {
-                await selectedFolder.StoreAsync(messageId, new StoreFlagsRequest(StoreAction.Add, MessageFlags.Seen) { Silent = true });
+                await selectedFolder.StoreAsync(
+                    messageId, new StoreFlagsRequest(StoreAction.Add, MessageFlags.Seen) { Silent = true });
             }
 
             return Result<string>.Success(null);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, ex.Message);
             return Result<string>.Failure(ex.Message);
         }
     }

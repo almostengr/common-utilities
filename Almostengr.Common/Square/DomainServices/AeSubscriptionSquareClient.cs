@@ -10,7 +10,7 @@ namespace Almostengr.Common.Square.DomainServices;
 public class AeSubscriptionSquareClient : AeSquareClient, ISubsriptionSquareClient
 {
     public AeSubscriptionSquareClient(
-        ILogger<AeSquareClient> logger, 
+        ILogger<AeSquareClient> logger,
         IOptions<SquareSettings> options) : base(logger, options)
     {
     }
@@ -89,37 +89,44 @@ public class AeSubscriptionSquareClient : AeSquareClient, ISubsriptionSquareClie
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
-
             return Result<Subscription>.Failure(ex.Message);
         }
     }
 
     public async Task<IEnumerable<Subscription>> GetSubscriptionsAsync(string customerId, bool activeOnly)
     {
-        if (string.IsNullOrWhiteSpace(customerId))
+        try
         {
-            return Enumerable.Empty<Subscription>();
-        }
-
-        var searchSubscriptionsRequest = new SearchSubscriptionsRequest()
-        {
-            Query = new SearchSubscriptionsQuery()
+            if (string.IsNullOrWhiteSpace(customerId))
             {
-                Filter = new SearchSubscriptionsFilter()
-                {
-                    CustomerIds = [customerId],
-                },
+                return Enumerable.Empty<Subscription>();
             }
-        };
 
-        var searchResponse = await Subscriptions.SearchAsync(searchSubscriptionsRequest);
+            var searchSubscriptionsRequest = new SearchSubscriptionsRequest()
+            {
+                Query = new SearchSubscriptionsQuery()
+                {
+                    Filter = new SearchSubscriptionsFilter()
+                    {
+                        CustomerIds = [customerId],
+                    },
+                }
+            };
 
-        if (activeOnly)
-        {
-            return searchResponse.Subscriptions.Where(s => s.Status == SubscriptionStatus.Active);
+            var searchResponse = await Subscriptions.SearchAsync(searchSubscriptionsRequest);
+
+            if (activeOnly)
+            {
+                return searchResponse.Subscriptions.Where(s => s.Status == SubscriptionStatus.Active);
+            }
+
+            return searchResponse.Subscriptions;
         }
-
-        return searchResponse.Subscriptions;
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return null;
+        }
     }
 
     public async Task<bool> HasSubscriptionsAsync(string customerId, bool activeOnly)
