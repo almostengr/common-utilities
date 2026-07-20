@@ -7,15 +7,15 @@ using Square;
 
 namespace Almostengr.Common.Square.DomainServices;
 
-public class AeCustomerSquareClient : AeSquareClient, ICustomerSquareClient
+public class GetOrCreateCustomerSquareClient : AeSquareClient, IGetOrCreateCustomerSquareClient
 {
-    public AeCustomerSquareClient(
+    public GetOrCreateCustomerSquareClient(
         ILogger<AeSquareClient> logger, 
         IOptions<SquareSettings> options) : base(logger, options)
     {
     }
 
-    public async Task<Result<Customer>> GetOrCreateCustomerAsync(
+    public async Task<Result<Customer>> ExecuteAsync(
         string customerId, string email, string firstName, string lastName, string phoneNumber)
     {
         try
@@ -98,7 +98,7 @@ public class AeCustomerSquareClient : AeSquareClient, ICustomerSquareClient
             };
 
             var createResponse = await Customers.CreateAsync(createCustomer);
-            if (createResponse.Errors.Count() > 0)
+            if (createResponse.Errors.Any())
             {
                 return Result<Customer>.Failure(string.Join(" ", createResponse.Errors));
             }

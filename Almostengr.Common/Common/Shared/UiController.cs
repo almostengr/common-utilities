@@ -22,7 +22,7 @@ public abstract class UiController : Controller
         return View("NotAuthorized");
     }
 
-    protected IActionResult NotFoundParitalView()
+    protected IActionResult NotFoundPartialView()
     {
         return PartialView("_NotFound");
     }

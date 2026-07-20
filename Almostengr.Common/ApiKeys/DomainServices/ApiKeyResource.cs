@@ -8,5 +8,4 @@ public sealed class ApiKeyResource : Resource
     public string HashedKey { get; set; }
     public string Prefix { get; set; }
     public int UserId { get; set; }
-    public string UserName { get; set; }
 }

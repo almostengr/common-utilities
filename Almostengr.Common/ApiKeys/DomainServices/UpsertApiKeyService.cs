@@ -49,7 +49,8 @@ public sealed class UpsertApiKeyService : ApiKeyService, IUpsertApiKeyService
                 await _dbContext.SaveChangesAsync();
             }
 
-            return Result<ApiKeyResource>.Success(newResource);
+            resource.PlainTextKey = newResource.PlainTextKey;
+            return Result<ApiKeyResource>.Success(resource);
         }
         catch (Exception ex)
         {
